@@ -2,7 +2,7 @@
 /********************************** Course:   Stat 2509        **************************/
 /********************************** Project:  Lecture-1        **************************/ 
 /********************************** Author:   Dr. Fares Said   **************************/ 
-/********************************** Date: 	  Sept 2019        **************************/ 
+/********************************** Date:     Sept 2019        **************************/ 
 /****************************************************************************************/
 
 FOOTNOTE1 "Course: STAT 2509; Lecture 1 SLR"; 
@@ -101,7 +101,7 @@ RUN;
 /* Or */
 PROC SGPLOT DATA = GrowPred;
    HISTOGRAM Residual / TRANSPARENCY = 0.7 BINSTART = -10; /*binwidth=10*/
-   DENSITY Residual; / LINEATTRS = graphdata1; /* LINEATTRS is the width of the line */
+   DENSITY Residual / LINEATTRS = graphdata1; /* LINEATTRS is the width of the line */
    HISTOGRAM Y / FILLATTRS = graphdata2 TRANSPARENCY = 0.5 BINSTART = -10; /*binwidth=10*/
    DENSITY Y / LINEATTRS = graphdata2;
    KEYLEGEND / LOCATION = inside POSITION = topright NOBORDER ACROSS = 2;
