@@ -126,7 +126,7 @@ RUN;
 /* (k) Perform an F-test for this null hypothesis. */ 
 
 /* Test statistic = ((SSR_f - SSR_r) / (k - g)) / (MSE_f) = (6.10624 - 2.50013) / (4-2) / 0.08967 = 20.1076
-/* Compare to F statistic with df = 4-2 and 54-5 = 2 and 4, for whichever value of alpha you want to use */
+/* Compare to F statistic with df = 4-2 and 54-5 = 2 and 49, for whichever value of alpha you want to use */
 /* If we look at the table on cuLearn we see that our test statistic is bigger than all of them */
 /* Thus, we reject the null hypothesis; we conclude that B3 and B4 are not both equal to 0. */  
 /* Intuitively, this makes sense (look at the confidence intervals we had earlier - they don't include 0)
