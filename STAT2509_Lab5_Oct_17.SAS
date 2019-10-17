@@ -2,8 +2,12 @@
 /********************************** Course:   Stat 2509       **************************/
 /********************************** Project:  Lecture-2(MLR)  **************************/ 
 /********************************** Author:   Dr. Fares Said  **************************/ 
-/********************************** Date: 	  Oct 2019        **************************/ 
+/********************************** Date:     Oct 2019        **************************/ 
 /***************************************************************************************/
+
+/* NOTE: PLEASE USE THIS LINK TO SUBMIT ANONYMOUS MID-SEMESTER FEEDBACK: */
+/* https://forms.gle/eUGHYwcNk8iwDP7fA */
+/* This feedback will be very helpful for me to improve the labs. Thank you in advance :) */
 
 FOOTNOTE1 "Course: Stat 2509; Lecture-2 (MLR)";
 FOOTNOTE2 "Student Name: Your Name; Student ID: 1245639987";
