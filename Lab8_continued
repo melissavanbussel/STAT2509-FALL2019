@@ -1,0 +1,77 @@
+/***************************************************************************************/
+/************************* Example 9.2 (Forward):  in Lecture-2 ************************/ 
+/************************* Example 9.3 (Backward): in Lecture-2 ************************/
+/************************* Example 9.4 (Stepwise): in Lecture-2 ************************/
+/***************************************************************************************/
+
+/* Recall from last week's lab, we had the following data: */ 
+
+/* This week, we are interested in performing forward, backward, and stepwise selection on the data. */ 
+
+/* We use the REG procedure to perform the model selection */
+/* "ForwardSelect", "BackwardSelect", and "StepwiseSelect" are the names we give to the models */ 
+
+/* When adding predictors: F-statistic is calculated for each of the possible new models; the p-value for these F-statistics */ 
+/* are then compared to the SLENTRY value. It defaults to 0.5, which may seem high, but is necessary since */ 
+/* one variable might not add a lot to the model, but it could add a LOT to the model when looked at in */ 
+/* conjunction with other variables. Thus, we set to 0.5 so that we aren't TOO picky and risk missing out. */  
+
+/* When removing predictors: predictors are removed one by one until all the predictors remaining in the */
+/* model produce an F-statistic with a p-value smaller than SLSTAY. This defaults to 0.10. */ 
+
+/* Thus, when we do stepwise, we need to specify both SLENTRY and SLSTAY, since we could be adding OR removing predictors. */
+/* The defaults are 0.15 for SLENTRY and for SLSTAY when we use stepwise. */   
+ODS EXCLUDE NObs;
+PROC REG DATA = WORK.Heat;
+	ForwardSelect:  MODEL Y = X: / SLENTRY = 0.5 SELECTION = forward;
+	BackwardSelect: MODEL Y = X: / SLSTAY = 0.1 SELECTION = backward;
+	StepwiseSelect: MODEL Y = X: / SLSTAY = 0.15 SLENTRY = 0.15 SELECTION = stepwise;
+	ODS OUTPUT SelectionSummary = Step;
+RUN;
+
+OPTIONS LABEL;
+ODS EXCLUDE NObs FitStatistics;
+PROC REG DATA = WORK.Heat;
+	MX1:  MODEL Y = X1; 
+	MX2: MODEL Y = X2; 
+	MX3: MODEL Y = X3; 
+	MX4: MODEL Y = X4;
+	MX12: MODEL Y = X1 X2;  
+	MX13: MODEL Y = X1 X3; 
+	MX14: MODEL Y = X1 X4;
+	MX23: MODEL Y = X2 X3; 
+	MX24: MODEL Y = X2 X4; 
+	MX34: MODEL Y = X3 X4;
+	MX123: MODEL Y = X1 X2 X3; 
+	MX124: MODEL Y = X1 X2 X4; 
+	MX134: MODEL Y = X1 X3 X4;
+	MX234: MODEL Y = X2 X3 X4; 
+	MX1234: MODEL Y = X1 X2 X3 X4; 
+	ODS OUTPUT ANOVA = ANOVA (DROP = Dependent);
+	ODS OUTPUT ParameterEstimates = Est (DROP = Dependent Label where=(Variable ne "Intercept"));
+RUN;
+OPTIONS NOLABEL;
+
+PROC SQL;
+CREATE TABLE SS_For AS 
+	SELECT T1.Model,
+	T1.DF AS df_SSR, 
+	T1.SS AS SSR,
+	T1.MS AS MSR,
+       	T2.DF AS df_SSE, 
+	T2.SS AS SSE,
+	T2.MS AS MSE, 
+	T1.FValue,
+	T3.maxSSR
+FROM ANOVA(WHERE = (Source = "Model")) AS T1
+LEFT JOIN 
+ANOVA(WHERE = (Source = "Error")) AS T2
+ON T1.Model = T2.Model
+LEFT JOIN (SELECT Model,SS AS maxSSR FROM ANOVA(WHERE =(Source = "Model"))
+      GROUP BY Length(Model)
+      HAVING SS = Max(SS)
+      ) AS T3
+ON T1.Model = T3.Model
+ORDER BY length(T1.Model),T1.Model
+; 
+Quit;
